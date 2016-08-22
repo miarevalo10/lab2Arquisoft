@@ -3,6 +3,16 @@ package controllers;
 /**
  * Created by ls.hernandez10 on 22/08/2016.
  */
+import dispatchers.AkkaDispatcher;
+import java.util.concurrent.CompletableFuture;
+import static play.libs.Json.toJson;
+import models.ProductEntity;
+import akka.dispatch.MessageDispatcher;
+import play.mvc.*;
+import java.util.concurrent.CompletionStage;
+import play.libs.Json;
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class ProductController extends Controller
 {
     public CompletionStage<Result> getProducts()
