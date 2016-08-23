@@ -91,6 +91,7 @@ public class ProductController extends Controller
         return CompletableFuture.
                 supplyAsync(
                         () -> {
+
                             ProductEntity pPorActualizar =  ProductEntity.FINDER.byId(id);
                             pPorActualizar.setName(p.getName());
                             pPorActualizar.setAvailable(p.getAvailable());
