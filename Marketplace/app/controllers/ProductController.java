@@ -32,6 +32,23 @@ public class ProductController extends Controller
                 );
     }
 
+    public CompletionStage<Result> getProduct(int id)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.
+                supplyAsync(
+                        () -> {
+                            return ProductEntity.FINDER.all();
+                        }
+                        ,jdbcDispatcher)
+                .thenApply(
+                        productEntities -> {
+                            return ok(toJson(productEntities));
+                        }
+                );
+    }
+
     public CompletionStage<Result> createProduct()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
