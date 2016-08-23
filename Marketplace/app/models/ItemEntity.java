@@ -12,17 +12,15 @@ public class ItemEntity extends Model{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "Item")
     private Long id;
-    private ProductEntity product;
-    private WishListEntity wishlist;
+    private Long product_id;
+    private Long wishlist_id;
     private int quantity;
 
-
     public ItemEntity() {
-        this.id=null;
-        this.product = null;
-        this.wishlist = null;
-        quantity = -1;
-
+        this.id = null;
+        this.product_id = null;
+        this.wishlist_id = null;
+        this.quantity = 0;
     }
 
     public ItemEntity(Long id) {
@@ -30,12 +28,12 @@ public class ItemEntity extends Model{
         this.id = id;
     }
 
-    public ItemEntity(Long id, ProductEntity product, WishListEntity wishlist, int quantity) {
+    public ItemEntity(Long id, Long product_id, Long wishlist_id, int quantity)
+    {
         this.id = id;
-        this.product = product;
-        this.wishlist = wishlist;
+        this.product_id = product_id;
+        this.wishlist_id = wishlist_id;
         this.quantity = quantity;
-
     }
 
     public Long getId() {
@@ -46,38 +44,36 @@ public class ItemEntity extends Model{
         this.id = id;
     }
 
-    public ProductEntity getProduct() {
-        return product;
+    public Long getProduct_id() {
+        return product_id;
     }
 
-    public WishListEntity getWishlist() {
-        return wishlist;
+    public void setProduct_id(Long product_id) {
+        this.product_id = product_id;
+    }
+
+    public Long getWishlist_id() {
+        return wishlist_id;
+    }
+
+    public void setWishlist_id(Long wishlist_id) {
+        this.wishlist_id = wishlist_id;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setProduct(ProductEntity product) {
-        this.product = product;
-    }
-
-    public void setWishlist(WishListEntity wishlist) {
-        this.wishlist = wishlist;
-    }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-
 
     @Override
     public String toString() {
         return "ItemEntity{" +
                 "id=" + id +
-                ", product='" + product + '\'' +
-                ", wishlist=" + wishlist +
+                ", product_id='" + product_id + '\'' +
+                ", wishlist_id=" + wishlist_id +
                 ", quantity=" + quantity +
                 '}';
     }

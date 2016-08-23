@@ -19,12 +19,27 @@ public class ItemController extends Controller
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
-        return CompletableFuture.
-                supplyAsync(
+        return CompletableFuture.supplyAsync(
                         () -> {
                             return ItemEntity.FINDER.all();
                         }
                         ,jdbcDispatcher)
+                .thenApply(
+                        productEntities -> {
+                            return ok(toJson(productEntities));
+                        }
+                );
+    }
+
+    public CompletionStage<Result> getItem(long id)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    return ItemEntity.FINDER.byId(id);
+                }
+                ,jdbcDispatcher)
                 .thenApply(
                         productEntities -> {
                             return ok(toJson(productEntities));
@@ -41,6 +56,42 @@ public class ItemController extends Controller
                 ()->{
                     product.save();
                     return product;
+                }
+        ).thenApply(
+                productEntity -> {
+                    return ok(Json.toJson(productEntity));
+                }
+        );
+    }
+
+    public CompletionStage<Result> deleteItem(long id)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.supplyAsync(
+                ()->{
+                    ItemEntity item = ItemEntity.FINDER.byId(id);
+                    ItemEntity.FINDER.deleteById(id);
+                    return item != null;
+                }
+        ).thenApply(
+                productEntity -> {
+                    return ok(Json.toJson(productEntity));
+                }
+        );
+    }
+
+    public CompletionStage<Result> updateItem(long id, long idP, long idW, int q)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.supplyAsync(
+                ()->{
+                    ItemEntity item = ItemEntity.FINDER.byId(id);
+                    item.setProduct_id(idP);
+                    item.setWishlist_id(idW);
+                    item.setQuantity(q);
+                    return item;
                 }
         ).thenApply(
                 productEntity -> {

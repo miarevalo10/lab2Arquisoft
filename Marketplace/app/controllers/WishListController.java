@@ -32,6 +32,40 @@ public class WishListController extends Controller
                 );
     }
 
+    public CompletionStage<Result> getWishList(long id)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.
+                supplyAsync(
+                        () -> {
+                            return WishListEntity.FINDER.byId(id);
+                        }
+                        ,jdbcDispatcher)
+                .thenApply(
+                        productEntities -> {
+                            return ok(toJson(productEntities));
+                        }
+                );
+    }
+
+    public CompletionStage<Result> deleteWishList(long id)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.supplyAsync(
+                ()->{
+                    WishListEntity item = WishListEntity.FINDER.byId(id);
+                    WishListEntity.FINDER.deleteById(id);
+                    return item != null;
+                }
+        ).thenApply(
+                productEntity -> {
+                    return ok(Json.toJson(productEntity));
+                }
+        );
+    }
+
     public CompletionStage<Result> createWishList()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
