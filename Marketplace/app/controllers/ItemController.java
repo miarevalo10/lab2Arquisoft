@@ -6,7 +6,7 @@ package controllers;
 import dispatchers.AkkaDispatcher;
 import java.util.concurrent.CompletableFuture;
 import static play.libs.Json.toJson;
-
+import models.ItemEntity;
 import akka.dispatch.MessageDispatcher;
 import play.mvc.*;
 import java.util.concurrent.CompletionStage;
@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class ItemController extends Controller
 {
     public CompletionStage<Result> getProducts()
+
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
