@@ -12,17 +12,17 @@ public class ItemEntity extends Model{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "Item")
     private Long id;
-    private String name;
-    private Integer stock;
-    private Float price;
-    private Boolean available;
+    private ProductEntity product;
+    private WishListEntity wishlist;
+    private int quantity;
+
 
     public ItemEntity() {
         this.id=null;
-        this.name ="NO NAME";
-        this.stock = -1;
-        this.price = -1.00f;
-        this.available = false;
+        this.product = null;
+        this.wishlist = null;
+        quantity = -1;
+
     }
 
     public ItemEntity(Long id) {
@@ -30,12 +30,12 @@ public class ItemEntity extends Model{
         this.id = id;
     }
 
-    public ItemEntity(Long id, String name, Integer stock, Float price, Boolean available) {
+    public ItemEntity(Long id, ProductEntity product, WishListEntity wishlist, int quantity) {
         this.id = id;
-        this.name = name;
-        this.stock = stock;
-        this.price = price;
-        this.available = available;
+        this.product = product;
+        this.wishlist = wishlist;
+        this.quantity = quantity;
+
     }
 
     public Long getId() {
@@ -46,46 +46,39 @@ public class ItemEntity extends Model{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public WishListEntity getWishlist() {
+        return wishlist;
     }
 
-    public Integer getStock() {
-        return stock;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 
-    public Float getPrice() {
-        return price;
+    public void setWishlist(WishListEntity wishlist) {
+        this.wishlist = wishlist;
     }
 
-    public void setPrice(Float price) {
-        this.price = price;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public Boolean getAvailable() {
-        return available;
-    }
 
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
 
     @Override
     public String toString() {
         return "ItemEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", stock=" + stock +
-                ", price=" + price +
-                ", available=" + available +
+                ", product='" + product + '\'' +
+                ", wishlist=" + wishlist +
+                ", quantity=" + quantity +
                 '}';
     }
 }

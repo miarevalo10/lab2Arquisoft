@@ -17,7 +17,7 @@ GET     /products                  controllers.ProductController.getProducts()
 GET     /product/:id               controllers.ProductController.getProduct(id : Long)
 POST    /product                   controllers.ProductController.createProduct()
 DELETE  /product/:id               controllers.ProductController.deleteProduct(id: Long)
-PUT     /product/:id               controllers.ProductController.updateProduct(id : Long)
+PUT     /product/:id               controllers.ProductController.updateProduct(id : Long, p : ProductEntity)
 
 ##ItemController
 GET     /items                     controllers.ItemController.getItems()

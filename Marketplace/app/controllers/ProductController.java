@@ -32,6 +32,23 @@ public class ProductController extends Controller
                 );
     }
 
+    public CompletionStage<Result> getProduct(Long id)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.
+                supplyAsync(
+                        () -> {
+                            return ProductEntity.FINDER.byId(id);
+                        }
+                        ,jdbcDispatcher)
+                .thenApply(
+                        productEntities -> {
+                            return ok(toJson(productEntities));
+                        }
+                );
+    }
+
     public CompletionStage<Result> createProduct()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
@@ -48,4 +65,46 @@ public class ProductController extends Controller
                 }
         );
     }
+
+    public CompletionStage<Result> deleteProduct(Long id)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.
+                supplyAsync(
+                        () -> {
+                            ProductEntity.FINDER.deleteById(id);
+                            return id;
+                        }
+                        ,jdbcDispatcher)
+                .thenApply(
+                        productEntities -> {
+                            return ok(toJson(productEntities));
+                        }
+                );
+    }
+
+    public CompletionStage<Result> upadateProduct(Long id, ProductEntity p)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.
+                supplyAsync(
+                        () -> {
+                            ProductEntity pPorActualizar =  ProductEntity.FINDER.byId(id);
+                            pPorActualizar.setName(p.getName());
+                            pPorActualizar.setAvailable(p.getAvailable());
+                            pPorActualizar.setPrice(p.getPrice());
+                            pPorActualizar.setStock(p.getStock());
+                            return pPorActualizar;
+                        }
+                        ,jdbcDispatcher)
+                .thenApply(
+                        productEntities -> {
+                            return ok(toJson(productEntities));
+                        }
+                );
+    }
+
+
 }

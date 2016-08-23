@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class ItemController extends Controller
 {
     public CompletionStage<Result> getItems()
-
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
