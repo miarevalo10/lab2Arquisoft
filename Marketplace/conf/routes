@@ -24,7 +24,7 @@ GET     /items                     controllers.ItemController.getItems()
 GET     /item/:id                  controllers.ItemController.getItem(id : Long)
 POST    /item                      controllers.ItemController.createItem()
 DELETE  /item/:id                  controllers.ItemController.deleteItem(id: Long)
-#PUT     /item/:id                  controllers.ItemController.updateItem(id : Long, p : ItemEntity)
+PUT     /item/:id                  controllers.ItemController.updateItem(id : Long, idP : Long, idW : Long, q : Integer)
 
 ##WishListController
 GET     /WishLists                controllers.WishListController.getWishLists()

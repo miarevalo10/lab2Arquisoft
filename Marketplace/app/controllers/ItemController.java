@@ -81,18 +81,17 @@ public class ItemController extends Controller
         );
     }
 
-    public CompletionStage<Result> updateItem(long id, ItemEntity entity)
+    public CompletionStage<Result> updateItem(long id, long idP, long idW, int q)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
-        JsonNode nProduct = request().body().asJson();
-        ItemEntity product = Json.fromJson( nProduct , ItemEntity.class ) ;
+
         return CompletableFuture.supplyAsync(
                 ()->{
                     ItemEntity item = ItemEntity.FINDER.byId(id);
-                    ItemEntity.FINDER.deleteById(id);
-                    entity.setId(id);
-                    entity.save();
-                    return entity;
+                    item.setProduct_id(idP);
+                    item.setWishlist_id(idW);
+                    item.setQuantity(q);
+                    return item;
                 }
         ).thenApply(
                 productEntity -> {
