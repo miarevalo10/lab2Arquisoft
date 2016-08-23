@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class ItemController extends Controller
 {
-    public CompletionStage<Result> getProducts()
+    public CompletionStage<Result> getItems()
 
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
@@ -33,7 +33,7 @@ public class ItemController extends Controller
                 );
     }
 
-    public CompletionStage<Result> createProduct()
+    public CompletionStage<Result> createItem()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
         JsonNode nProduct = request().body().asJson();

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class WishListController extends Controller
 {
-    public CompletionStage<Result> getProducts()
+    public CompletionStage<Result> getWishLists()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
@@ -32,7 +32,7 @@ public class WishListController extends Controller
                 );
     }
 
-    public CompletionStage<Result> createProduct()
+    public CompletionStage<Result> createWishList()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
         JsonNode nProduct = request().body().asJson();
