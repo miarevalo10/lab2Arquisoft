@@ -84,7 +84,7 @@ public class ProductController extends Controller
                 );
     }
 
-    public CompletionStage<Result> upadateProduct(Long id, ProductEntity p)
+    public CompletionStage<Result> updateProduct(Long id, String name, boolean available, Float price, int stock )
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
@@ -93,10 +93,16 @@ public class ProductController extends Controller
                         () -> {
 
                             ProductEntity pPorActualizar =  ProductEntity.FINDER.byId(id);
-                            pPorActualizar.setName(p.getName());
-                            pPorActualizar.setAvailable(p.getAvailable());
-                            pPorActualizar.setPrice(p.getPrice());
-                            pPorActualizar.setStock(p.getStock());
+//                            pPorActualizar.setName(p.getName());
+//                            pPorActualizar.setAvailable(p.getAvailable());
+//                            pPorActualizar.setPrice(p.getPrice());
+//                            pPorActualizar.setStock(p.getStock());
+
+                            pPorActualizar.setName(name);
+                            pPorActualizar.setAvailable(available);
+                            pPorActualizar.setPrice(price);
+                            pPorActualizar.setStock(stock);
+
                             return pPorActualizar;
                         }
                         ,jdbcDispatcher)
