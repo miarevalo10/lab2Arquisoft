@@ -17,7 +17,7 @@ public class ItemEntity extends Model{
     private int quantity;
 
     public ItemEntity() {
-        this.id=null;
+        this.id = null;
         this.product_id = null;
         this.wishlist_id = null;
         this.quantity = 0;

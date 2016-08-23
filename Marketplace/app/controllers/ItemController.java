@@ -5,7 +5,7 @@ package controllers;
  */
 import dispatchers.AkkaDispatcher;
 import java.util.concurrent.CompletableFuture;
-import play.libs.Json.toJson;
+import static play.libs.Json.toJson;
 import models.ItemEntity;
 import akka.dispatch.MessageDispatcher;
 import play.mvc.*;
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class ItemController extends Controller
 {
-    public CompletionStage<Result> getProducts()
+    public CompletionStage<Result> getItems()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
@@ -31,7 +31,7 @@ public class ItemController extends Controller
                 );
     }
 
-    public CompletionStage<Result> getProduct(long id)
+    public CompletionStage<Result> getItem(long id)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
@@ -47,7 +47,7 @@ public class ItemController extends Controller
                 );
     }
 
-    public CompletionStage<Result> createProduct()
+    public CompletionStage<Result> createItem()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
         JsonNode nProduct = request().body().asJson();
@@ -64,7 +64,7 @@ public class ItemController extends Controller
         );
     }
 
-    public CompletionStage<Result> deleteProduct(long id)
+    public CompletionStage<Result> deleteItem(long id)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
@@ -81,4 +81,23 @@ public class ItemController extends Controller
         );
     }
 
+    public CompletionStage<Result> updateItem(long id, ItemEntity entity)
+    {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+        JsonNode nProduct = request().body().asJson();
+        ItemEntity product = Json.fromJson( nProduct , ItemEntity.class ) ;
+        return CompletableFuture.supplyAsync(
+                ()->{
+                    ItemEntity item = ItemEntity.FINDER.byId(id);
+                    ItemEntity.FINDER.deleteById(id);
+                    entity.setId(id);
+                    entity.save();
+                    return entity;
+                }
+        ).thenApply(
+                productEntity -> {
+                    return ok(Json.toJson(productEntity));
+                }
+        );
+    }
 }
