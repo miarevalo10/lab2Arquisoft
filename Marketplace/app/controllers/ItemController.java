@@ -8,6 +8,8 @@ import java.util.concurrent.CompletableFuture;
 import static play.libs.Json.toJson;
 import models.ItemEntity;
 import akka.dispatch.MessageDispatcher;
+import models.ProductEntity;
+import models.WishListEntity;
 import play.mvc.*;
 import java.util.concurrent.CompletionStage;
 import play.libs.Json;
@@ -15,13 +17,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class ItemController extends Controller
 {
-    public CompletionStage<Result> getItems()
+    public CompletionStage<Result> getItems(long idW)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
         return CompletableFuture.supplyAsync(
                         () -> {
-                            return ItemEntity.FINDER.all();
+                            return ItemEntity.FINDER.where().eq("wishlist_id",idW).findList();
                         }
                         ,jdbcDispatcher)
                 .thenApply(
@@ -31,13 +33,13 @@ public class ItemController extends Controller
                 );
     }
 
-    public CompletionStage<Result> getItem(long id)
+    public CompletionStage<Result> getItem(long idW, long idP)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
         return CompletableFuture.supplyAsync(
                 () -> {
-                    return ItemEntity.FINDER.byId(id);
+                    return ItemEntity.FINDER.where().eq("wishlist_id",idW).eq("id",idP);
                 }
                 ,jdbcDispatcher)
                 .thenApply(
@@ -47,15 +49,23 @@ public class ItemController extends Controller
                 );
     }
 
-    public CompletionStage<Result> createItem()
+    public CompletionStage<Result> createItem(long idW)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
-        JsonNode nProduct = request().body().asJson();
-        ItemEntity product = Json.fromJson( nProduct , ItemEntity.class ) ;
+        JsonNode nItem = request().body().asJson();
+        ItemEntity item = Json.fromJson( nItem , ItemEntity.class ) ;
+
+
         return CompletableFuture.supplyAsync(
                 ()->{
-                    product.save();
-                    return product;
+                    ProductEntity p = ProductEntity.FINDER.byId(item.getIdP());
+
+                    WishListEntity w =WishListEntity.FINDER.byId(idW);
+                    item.setWishlist(w);
+                    item.setProduct(p);
+
+                    item.save();
+                    return item;
                 }
         ).thenApply(
                 productEntity -> {
@@ -81,16 +91,16 @@ public class ItemController extends Controller
         );
     }
 
-    public CompletionStage<Result> updateItem(long id, long idP, long idW, int q)
+    public CompletionStage<Result> updateItem(long id, long idP, long idW)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
         return CompletableFuture.supplyAsync(
                 ()->{
                     ItemEntity item = ItemEntity.FINDER.byId(id);
-                    item.setProduct_id(idP);
-                    item.setWishlist_id(idW);
-                    item.setQuantity(q);
+//                    item.setProduct(idP);
+//                    item.setWishlist(idW);
+//                    item.setQuantity(q);
                     return item;
                 }
         ).thenApply(

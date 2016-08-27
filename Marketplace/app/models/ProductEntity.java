@@ -30,7 +30,7 @@ public class ProductEntity extends Model{
         this.id = id;
     }
 
-    public ProductEntity(Long id, String name, Integer stock, Float price, Boolean available) {
+    public ProductEntity(Long id, String name, Integer stock, Float price, boolean available) {
         this.id = id;
         this.name = name;
         this.stock = stock;

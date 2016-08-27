@@ -12,9 +12,14 @@ import play.mvc.*;
 import java.util.concurrent.CompletionStage;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.JsonNode;
+import javax.inject.Inject;
+import play.libs.concurrent.HttpExecutionContext;
 
 public class ProductController extends Controller
 {
+    @Inject HttpExecutionContext ec;
+
+
     public CompletionStage<Result> getProducts()
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
@@ -84,31 +89,31 @@ public class ProductController extends Controller
                 );
     }
 
-    public CompletionStage<Result> updateProduct(Long id, String name, boolean available, Float price, int stock )
+    public CompletionStage<Result> updateProduct(Long id)
     {
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
 
         return CompletableFuture.
                 supplyAsync(
                         () -> {
-
+                            JsonNode nProduct = request().body().asJson();
+                            ProductEntity p = Json.fromJson( nProduct , ProductEntity.class ) ;
                             ProductEntity pPorActualizar =  ProductEntity.FINDER.byId(id);
-//                            pPorActualizar.setName(p.getName());
-//                            pPorActualizar.setAvailable(p.getAvailable());
-//                            pPorActualizar.setPrice(p.getPrice());
-//                            pPorActualizar.setStock(p.getStock());
+//                            ProductEntity.db().update(pPorActualizar);
 
-                            pPorActualizar.setName(name);
-                            pPorActualizar.setAvailable(available);
-                            pPorActualizar.setPrice(price);
-                            pPorActualizar.setStock(stock);
+                            pPorActualizar.setName(p.getName());
+                            pPorActualizar.setAvailable(p.getAvailable());
+                            pPorActualizar.setPrice(p.getPrice());
+                            pPorActualizar.setStock(p.getStock());
+
+                            pPorActualizar.update();
 
                             return pPorActualizar;
                         }
-                        ,jdbcDispatcher)
+                        ,ec.current())
                 .thenApply(
-                        productEntities -> {
-                            return ok(toJson(productEntities));
+                        productEntity -> {
+                            return ok(toJson(productEntity));
                         }
                 );
     }

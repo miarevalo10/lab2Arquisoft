@@ -3,26 +3,28 @@ package models;
 import javax.persistence.*;
 import com.avaje.ebean.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "wishlistntity")
+@Table(name = "wishlistentity")
 public class WishListEntity extends Model{
 
     public static Finder<Long,WishListEntity> FINDER = new Finder<>(WishListEntity.class);
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "Item")
+    @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "Wishlist")
     private Long id;
-    private String name;
-    private Integer stock;
-    private Float price;
-    private Boolean available;
+    private String username;
+
+////    @OneToMany
+//    private List<ItemEntity> items;
+
 
     public WishListEntity() {
         this.id=null;
-        this.name ="NO NAME";
-        this.stock = -1;
-        this.price = -1.00f;
-        this.available = false;
+        this.username ="NO NAME";
+
     }
 
     public WishListEntity(Long id) {
@@ -30,12 +32,10 @@ public class WishListEntity extends Model{
         this.id = id;
     }
 
-    public WishListEntity(Long id, String name, Integer stock, Float price, Boolean available) {
+    public WishListEntity(Long id, String username) {
         this.id = id;
-        this.name = name;
-        this.stock = stock;
-        this.price = price;
-        this.available = available;
+        this.username = username;
+//        items = new ArrayList<ItemEntity>() ;
     }
 
     public Long getId() {
@@ -46,46 +46,25 @@ public class WishListEntity extends Model{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
+//
+//    public List<ItemEntity> getItems() {
+//        return items;
+//    }
 
-    public Integer getStock() {
-        return stock;
-    }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    public Boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
 
     @Override
     public String toString() {
         return "WishListEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", stock=" + stock +
-                ", price=" + price +
-                ", available=" + available +
+                ", name='" + username +
                 '}';
     }
 }

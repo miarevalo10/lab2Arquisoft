@@ -6,8 +6,10 @@
 create table itementity (
   id                        bigint not null,
   product_id                bigint,
+  id_p                      bigint,
   wishlist_id               bigint,
   quantity                  integer,
+  constraint uq_itementity_product_id unique (product_id),
   constraint pk_itementity primary key (id))
 ;
 
@@ -20,21 +22,22 @@ create table productentity (
   constraint pk_productentity primary key (id))
 ;
 
-create table wishlistntity (
+create table wishlistentity (
   id                        bigint not null,
-  name                      varchar(255),
-  stock                     integer,
-  price                     float,
-  available                 boolean,
-  constraint pk_wishlistntity primary key (id))
+  username                  varchar(255),
+  constraint pk_wishlistentity primary key (id))
 ;
 
 create sequence Item;
 
 create sequence Product;
 
-create sequence Item;
+create sequence Wishlist;
 
+alter table itementity add constraint fk_itementity_product_1 foreign key (product_id) references productentity (id);
+create index ix_itementity_product_1 on itementity (product_id);
+alter table itementity add constraint fk_itementity_wishlist_2 foreign key (wishlist_id) references wishlistentity (id);
+create index ix_itementity_wishlist_2 on itementity (wishlist_id);
 
 
 
@@ -44,11 +47,11 @@ drop table if exists itementity cascade;
 
 drop table if exists productentity cascade;
 
-drop table if exists wishlistntity cascade;
+drop table if exists wishlistentity cascade;
 
 drop sequence if exists Item;
 
 drop sequence if exists Product;
 
-drop sequence if exists Item;
+drop sequence if exists Wishlist;
 

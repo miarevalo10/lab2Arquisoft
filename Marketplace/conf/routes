@@ -17,14 +17,18 @@ GET     /products                  controllers.ProductController.getProducts()
 GET     /product/:id               controllers.ProductController.getProduct(id : Long)
 POST    /product                   controllers.ProductController.createProduct()
 DELETE  /product/:id               controllers.ProductController.deleteProduct(id: Long)
+PUT     /product/:id               controllers.ProductController.updateProduct(id : Long)
 
 
 ##ItemController
-GET     /items                     controllers.ItemController.getItems()
-GET     /item/:id                  controllers.ItemController.getItem(id : Long)
-POST    /item                      controllers.ItemController.createItem()
-DELETE  /item/:id                  controllers.ItemController.deleteItem(id: Long)
-PUT     /item/:id                  controllers.ItemController.updateItem(id : Long, idP : Long, idW : Long, q : Integer)
+#Obtener todos los items dado una wishlist
+GET     /WishList/:idW/items      controllers.ItemController.getItems(idW : Long)
+#Obtener un item de una wishlist
+GET     /WishList/:idW/items/:id  controllers.ItemController.getItem(idW : Long, id : Long)
+#Crear un item en una wishlist
+POST    /WishList/:idW/item       controllers.ItemController.createItem(idW : Long)
+#DELETE  /WishList/:idW/items/:id  controllers.ItemController.deleteItem(idW: Long, id : Long)
+#PUT     /WishList/:idW/items/:id  controllers.ItemController.updateItem(id : Long, idP : Long, idW : Long, q : Integer)
 
 ###WishListController
 GET     /WishLists                controllers.WishListController.getWishLists()

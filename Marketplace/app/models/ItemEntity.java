@@ -12,14 +12,19 @@ public class ItemEntity extends Model{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "Item")
     private Long id;
-    private Long product_id;
-    private Long wishlist_id;
+    @OneToOne(cascade = CascadeType.ALL)
+    private ProductEntity product;
+
+
+    private Long idP;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private WishListEntity wishlist;
     private int quantity;
 
     public ItemEntity() {
         this.id = null;
-        this.product_id = null;
-        this.wishlist_id = null;
+        this.product = null;
+        this.wishlist = null;
         this.quantity = 0;
     }
 
@@ -28,12 +33,13 @@ public class ItemEntity extends Model{
         this.id = id;
     }
 
-    public ItemEntity(Long id, Long product_id, Long wishlist_id, int quantity)
+    public ItemEntity(Long id, ProductEntity product, WishListEntity wishlist, int quantity, Long idP)
     {
         this.id = id;
-        this.product_id = product_id;
-        this.wishlist_id = wishlist_id;
+        this.product = product;
+        this.wishlist = wishlist;
         this.quantity = quantity;
+        this.idP = idP;
     }
 
     public Long getId() {
@@ -44,20 +50,20 @@ public class ItemEntity extends Model{
         this.id = id;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProduct(ProductEntity product) {
+        this.product= product;
     }
 
-    public Long getWishlist_id() {
-        return wishlist_id;
+    public WishListEntity getWishlist() {
+        return wishlist;
     }
 
-    public void setWishlist_id(Long wishlist_id) {
-        this.wishlist_id = wishlist_id;
+    public void setWishlist(WishListEntity wishlist) {
+        this.wishlist = wishlist;
     }
 
     public int getQuantity() {
@@ -68,12 +74,20 @@ public class ItemEntity extends Model{
         this.quantity = quantity;
     }
 
+    public Long getIdP() {
+        return idP;
+    }
+
+    public void setIdP(Long idP) {
+        this.idP = idP;
+    }
+
     @Override
     public String toString() {
         return "ItemEntity{" +
                 "id=" + id +
-                ", product_id='" + product_id + '\'' +
-                ", wishlist_id=" + wishlist_id +
+                ", product_id='" + product + '\'' +
+                ", wishlist_id=" + wishlist +
                 ", quantity=" + quantity +
                 '}';
     }
